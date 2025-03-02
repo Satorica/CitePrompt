@@ -56,27 +56,92 @@ if args.dataset == "scicite":
     cutoff=0.5
     max_seq_l = 512
     batch_s = 20
-    template_text = '{"placeholder":"text_a"} It has a citation of type {"mask"}'
+    # template_text = '{"placeholder":"text_a"} It has a citation of type {"mask"}'
+    template_text = '{"placeholder":"text_a"} This citation is {"mask"} the method.'
 elif args.dataset == "acl_arc":
     dataset['train'] = ACL_ARC().get_examples("./acl_arc/train/", 'train', stopwords)
     dataset['validation'] = ACL_ARC().get_examples("./acl_arc/dev/", 'dev', stopwords)
-    dataset['test'] = ACL_ARC().get_examples("./acl_arc/test/", 'test', stopwords)
+    dataset['test'] = ACL_ARC().get_examples("./acl_arc/test/", 'train_xlData_cleaned', stopwords)
     class_labels = ACL_ARC().get_labels()
     scriptsbase = "TextClassification/acl_arc"
     scriptformat = "txt"
     cutoff=0.5
     max_seq_l = 512
     batch_s = 20
-    template_text = '{"placeholder":"text_a"} It has a citation of type {"mask"}'
+    # template_text = '{"placeholder":"text_a"} It has a citation of type {"mask"}'
+    template_text = '{"placeholder":"text_a"} This citation is {"mask"} the method.'
 else:
     raise NotImplementedError
+
+# 在加载完数据集后添加以下代码
+# 重定向标签为二分类（Extend/NotExtend）
+if args.dataset == "scicite":
+    # 原始标签为 ["background", "method", "result"]
+    # 将"method"映射为"Extend"，其他映射为"NotExtend"
+    new_class_labels = ["NotExtend", "Extend"]
+    
+    # 重定向训练集标签
+    for example in dataset['train']:
+        if example.label == 1:  # "method"对应索引为1
+            example.label = 1   # "Extend"对应索引为1
+        else:
+            example.label = 0   # "NotExtend"对应索引为0
+    
+    # 重定向验证集标签
+    for example in dataset['validation']:
+        if example.label == 1:  # "method"对应索引为1
+            example.label = 1   # "Extend"对应索引为1
+        else:
+            example.label = 0   # "NotExtend"对应索引为0
+    
+    # 重定向测试集标签
+    for example in dataset['test']:
+        if example.label == 1:  # "method"对应索引为1
+            example.label = 1   # "Extend"对应索引为1
+        else:
+            example.label = 0   # "NotExtend"对应索引为0
+    
+    # 更新class_labels
+    class_labels = new_class_labels
+
+elif args.dataset == "acl_arc":
+    # 原始标签为 ["Background", "Extends", "Uses", "Motivation", "Compare Contrast", "Future work"]
+    # 将"Extends"映射为"Extend"，其他映射为"NotExtend"
+    new_class_labels = ["NotExtend", "Extend"]
+    
+    # 重定向训练集标签
+    for example in dataset['train']:
+        if example.label == 1:  # "Extends"对应索引为1
+            example.label = 1   # "Extend"对应索引为1
+        else:
+            example.label = 0   # "NotExtend"对应索引为0
+    
+    # 重定向验证集标签
+    for example in dataset['validation']:
+        if example.label == 1:  # "Extends"对应索引为1
+            example.label = 1   # "Extend"对应索引为1
+        else:
+            example.label = 0   # "NotExtend"对应索引为0
+    
+    # 重定向测试集标签
+    for example in dataset['test']:
+        if example.label == 1:  # "Extends"对应索引为1
+            example.label = 1   # "Extend"对应索引为1
+        else:
+            example.label = 0   # "NotExtend"对应索引为0
+    
+    # 更新class_labels
+    class_labels = new_class_labels
 
 #template_text = '{"placeholder":"text_a"} It has a citation of type {"mask"}'
 #template_text = '{"mask"} Citation type: {"placeholder":"text_a"}'
 mytemplate = ManualTemplate(tokenizer=tokenizer, text=template_text)
 
+# myverbalizer = ManualVerbalizer(tokenizer, classes=class_labels,
+#                         label_words=[["background"], ["method "], ["result"]])
+# �޸�Verbalizer
 myverbalizer = ManualVerbalizer(tokenizer, classes=class_labels,
-                        label_words=[["background"], ["method "], ["result"]])
+                        label_words=[["not extend", "not using"], ["extend", "using"]])
 
 train_dataloader = PromptDataLoader(dataset=dataset["train"], template=mytemplate, tokenizer=tokenizer,
     tokenizer_wrapper_class=WrapperClass, max_seq_length=max_seq_l, decoder_max_length=3,
