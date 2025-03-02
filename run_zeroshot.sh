@@ -6,9 +6,9 @@ SHOT=0 # 0 1 10 20
 VERBALIZER=kpt #
 CALIBRATION="--calibration" # ""
 FILTER=tfidf_filter # none
-MODEL_NAME_OR_PATH=""
+MODEL_NAME_OR_PATH="./scibert_scivocab_uncased"
 RESULTPATH="results_zeroshot"
-OPENPROMPTPATH=""
+OPENPROMPTPATH="."
 
 
 $PYTHONPATH zeroshot.py \

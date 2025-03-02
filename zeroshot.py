@@ -27,7 +27,7 @@ parser.add_argument("--template_id", type=int)
 parser.add_argument("--dataset",type=str, default='acl_arc')
 
 parser.add_argument("--gradient_accumulation_steps", type=int, default=1)
-parser.add_argument("--max_epochs", type=int, default=5)
+parser.add_argument("--max_epochs", type=int, default=10)
 parser.add_argument("--kptw_lr", default=0.06, type=float)
 parser.add_argument("--pred_temp", default=1.0, type=float)
 parser.add_argument("--max_token_split", default=-1, type=int)
@@ -56,7 +56,7 @@ if args.dataset == "scicite":
     scriptformat = "txt"
     cutoff=0.5
     max_seq_l = 512
-    batch_s = 40
+    batch_s = 20
     template_text = '{"placeholder":"text_a"} It has a citation of type {"mask"}'
 elif args.dataset == "acl_arc":
     dataset['train'] = ACL_ARC().get_examples("./acl_arc/train/", 'train', stopwords)
@@ -67,7 +67,7 @@ elif args.dataset == "acl_arc":
     scriptformat = "txt"
     cutoff=0.5
     max_seq_l = 512
-    batch_s = 40
+    batch_s = 20
     template_text = '{"placeholder":"text_a"} It has a citation of type {"mask"}'
 else:
     raise NotImplementedError

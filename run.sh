@@ -4,9 +4,9 @@ VERBALIZER=kpt #soft auto
 FILTER=tfidf_filter # none
 KPTWLR=0.0 # 0.06
 MAXTOKENSPLIT=-1 # 1
-MODEL_NAME_OR_PATH=""
+MODEL_NAME_OR_PATH="./scibert_scivocab_uncased"
 RESULTPATH="results_normal"
-OPENPROMPTPATH=""
+OPENPROMPTPATH="."
 
 mkdir ckpts
 

@@ -1,7 +1,7 @@
 from pickle import FALSE
 from torch.utils.data.sampler import RandomSampler
 from transformers.configuration_utils import PretrainedConfig
-from transformers.generation_utils import GenerationMixin
+from transformers.generation  import GenerationMixin
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset

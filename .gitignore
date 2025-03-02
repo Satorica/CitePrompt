@@ -1,0 +1,72 @@
+# Python相关
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 虚拟环境
+venv/
+ENV/
+.env
+.venv
+env/
+env.bak/
+venv.bak/
+
+# 模型检查点和大型数据文件
+ckpts/
+*.pt
+*.pth
+*.bin
+*.h5
+*.hdf5
+*.pkl
+*.model
+
+# 日志和结果文件
+logs/
+*.log
+*.csv
+*.json
+*.jsonl
+*.tsv
+*.txt
+
+# 系统文件
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 不忽略的文件类型（这些将被Git跟踪）
+!*.py
+!*.sh
+!requirements.txt
+!README.md
+
+# 特定目录中的所有内容，但保留目录结构
+acl_arc/*
+SciCite/*
+scibert_scivocab_uncased/*
+openprompt/*
+scripts/*.json
+scripts/*.txt
+scripts/*.csv
+scripts/*.tsv 
